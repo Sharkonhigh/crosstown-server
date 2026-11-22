@@ -200,7 +200,7 @@ func cors(h http.HandlerFunc) http.HandlerFunc {
 }
 func readJSON(r *http.Request, v any) error {
 	defer r.Body.Close()
-	return json.NewDecoder(http.MaxBytesReader(nil, r.Body, 64*1024)).Decode(v)
+	return json.NewDecoder(http.MaxBytesReader(nil, r.Body, 256*1024)).Decode(v)
 }
 
 func regionOrder(r string) int { return strings.Index("EU NA ASIA OCE SA", r) }
@@ -346,7 +346,7 @@ func (s *mpServer) routes(mux *http.ServeMux) {
 			return
 		}
 		p.Last = time.Now()
-		if len(in.S) > 0 && len(in.S) < 4096 {
+		if len(in.S) > 0 && len(in.S) < 60000 {
 			p.State = in.S
 		}
 		for _, e := range in.Ev {
